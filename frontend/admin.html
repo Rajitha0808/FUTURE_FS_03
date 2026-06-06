@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg1: #05060a;
+  --bg2: #0b1220;
+  --card: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.08);
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent1: #7c3aed;
+  --accent2: #22d3ee;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: radial-gradient(circle at top, #111827, var(--bg1));
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== TOP HEADER (APPLE STYLE) ===== */
+header {
+  padding: 22px 30px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ===== WRAPPER ===== */
+.container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 15px;
+}
+
+/* BUTTON (APPLE STYLE) */
+button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  box-shadow: 0 10px 30px rgba(124,58,237,0.25);
+
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(34,211,238,0.25);
+}
+
+/* SEARCH BAR (APPLE CLEAN STYLE) */
+input {
+  flex: 1;
+  max-width: 320px;
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+
+  color: white;
+  outline: none;
+
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.15);
+}
+
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ===== CARD (APPLE GLASS STYLE) ===== */
+.card {
+  position: relative;
+  padding: 20px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+
+  backdrop-filter: blur(16px);
+
+  transition: all 0.3s ease;
+
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(34,211,238,0.35);
+}
+
+/* LIGHT GLOW EFFECT */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+
+  background: radial-gradient(circle,
+    rgba(124,58,237,0.15),
+    transparent 60%
+  );
+
+  transform: rotate(25deg);
+}
+
+/* BADGE (APPLE STYLE TAG) */
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 11px;
+
+  border-radius: 999px;
+  background: rgba(34,211,238,0.12);
+  color: #22d3ee;
+
+  margin-bottom: 12px;
+}
+
+/* TEXT HIERARCHY */
+p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+p b {
+  color: var(--text);
+}
+
+/* SCROLL SMOOTH FEEL */
+html {
+  scroll-behavior: smooth;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🍽️ Urban Café — Admin Dashboard
+</header>
+
+<div class="container">
+
+  <div class="topbar">
+    <button onclick="loadBookings()">Refresh</button>
+    <input type="text" id="search" placeholder="Search bookings..." onkeyup="filterBookings()">
+  </div>
+
+  <div id="grid" class="grid"></div>
+
+</div>
+
+<script>
+let bookingsData = [];
+
+async function loadBookings() {
+  const res = await fetch("http://localhost:5000/bookings");
+  bookingsData = await res.json();
+  render(bookingsData);
+}
+
+function render(data) {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  data.forEach(b => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <div class="badge">New Booking</div>
+      <p><b>Name:</b> ${b.name}</p>
+      <p><b>Email:</b> ${b.email}</p>
+      <p><b>Date:</b> ${b.date}</p>
+      <p><b>Time:</b> ${b.time}</p>
+      <p><b>People:</b> ${b.people}</p>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function filterBookings() {
+  const value = document.getElementById("search").value.toLowerCase();
+
+  const filtered = bookingsData.filter(b =>
+    b.name.toLowerCase().includes(value)
+  );
+
+  render(filtered);
+}
+
+loadBookings();
+</script>
+
+</body>
+</html>

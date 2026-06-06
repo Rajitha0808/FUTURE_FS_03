@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Urban Café</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --bg:#05070d;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:rgba(255,255,255,0.05);
+  --border:rgba(255,255,255,0.08);
+  --accent1:#7c3aed;
+  --accent2:#22d3ee;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Inter;
+  background: radial-gradient(circle at top,#111827,var(--bg));
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* NAVBAR */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+
+  position:sticky;
+  top:0;
+
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid var(--border);
+}
+
+.logo{
+  font-weight:700;
+  font-size:18px;
+}
+
+nav a{
+  margin:0 12px;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:500;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:var(--accent2);
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:140px 20px;
+  position:relative;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle,var(--accent1),transparent 60%);
+  filter:blur(120px);
+  top:-120px;
+  left:50%;
+  transform:translateX(-50%);
+  opacity:0.25;
+  z-index:-1;
+}
+
+.hero h1{
+  font-size:60px;
+  font-weight:800;
+}
+
+.hero p{
+  margin-top:15px;
+  color:var(--muted);
+  font-size:18px;
+}
+
+/* BUTTON */
+button{
+  margin-top:25px;
+  padding:14px 26px;
+  border:none;
+  border-radius:14px;
+
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+button:hover{
+  transform:translateY(-4px);
+}
+
+/* SECTION */
+section{
+  padding:90px 20px;
+}
+
+/* CARDS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:22px;
+  border-radius:16px;
+  text-align:center;
+
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  border-color:rgba(34,211,238,0.4);
+}
+
+/* ABOUT */
+.about{
+  max-width:800px;
+  margin:auto;
+  text-align:center;
+  color:var(--muted);
+}
+
+.about h2{
+  color:white;
+  margin-bottom:10px;
+}
+
+/* BOOKING */
+.booking{
+  text-align:center;
+}
+
+input{
+  width:320px;
+  padding:14px;
+  margin:8px;
+  border-radius:12px;
+
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  color:white;
+  outline:none;
+}
+
+input:focus{
+  border-color:var(--accent2);
+  box-shadow:0 0 0 3px rgba(34,211,238,0.15);
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:40px;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+}
+
+/* ANIMATION */
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  transition:0.8s;
+}
+
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">☕ Urban Café</div>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#menu">Menu</a>
+  <a href="#about">About</a>
+  <a href="#book">Book</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero fade">
+  <h1>Premium Coffee Experience</h1>
+  <p>Modern café for coffee lovers, chill vibes & food</p>
+
+  <button onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})">
+    Book a Table
+  </button>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="fade">
+  <div class="grid">
+    <div class="card">☕ Espresso</div>
+    <div class="card">🥐 Croissant</div>
+    <div class="card">🍰 Cake</div>
+    <div class="card">🥤 Cold Coffee</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about fade">
+  <h2>About Us</h2>
+  <p>
+    Urban Café is a premium modern café delivering high-quality coffee,
+    snacks and a relaxing environment for customers.
+  </p>
+</section>
+
+<!-- BOOKING -->
+<section id="book" class="booking fade">
+  <h2>Book Your Table</h2>
+
+  <form id="bookingForm">
+    <input type="text" placeholder="Name" required>
+    <input type="email" placeholder="Email" required>
+    <input type="date" required>
+    <input type="time" required>
+    <input type="number" placeholder="People" required>
+
+    <br>
+    <button type="submit">Confirm Booking</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+© 2026 Urban Café | All rights reserved
+</footer>
+
+<script>
+// animation
+const elements = document.querySelectorAll(".fade");
+
+window.addEventListener("scroll", () => {
+  elements.forEach(el => {
+    if(el.getBoundingClientRect().top < window.innerHeight - 100){
+      el.classList.add("show");
+    }
+  });
+});
+
+// booking API
+document.getElementById("bookingForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+
+  const data = {
+    name:e.target[0].value,
+    email:e.target[1].value,
+    date:e.target[2].value,
+    time:e.target[3].value,
+    people:e.target[4].value
+  };
+
+  await fetch("http://localhost:5000/book",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(data)
+  });
+
+  alert("Booking successful 🍽️");
+  e.target.reset();
+});
+</script>
+
+</body>
+</html>
